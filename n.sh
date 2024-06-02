@@ -27,7 +27,7 @@ install_nginx{
     fi
 
     if [ $ID == 'ubuntu' ]; then
-        apt -y install gcc make libpcre3 libpcre3-dev openssl libssl-dev zliblg-div
+        apt -y install gcc make libpcre3 libpcre3-dev openssl libssl-dev zlib1g-dev
     fi
     [ $? -ne 0 ] && { echo '安装依赖失败'; exit;}
 
