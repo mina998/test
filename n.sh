@@ -14,8 +14,9 @@ SRC_DIR=$(pwd)
 #导入文件中定义的变量 .相当于 source 命令
 . /etc/os-release
 
-install_nginx{
+function install_nginx {
     cd $SRC_DIR
+     rm -rf ${INSTALL_DIR}
     #创建目录
     if [ -e ${NGINX_DIR} ]; then
         echo 'Nginx 已安装'
@@ -25,7 +26,7 @@ install_nginx{
     fi
     # 安装依赖
     if [ $ID == 'ubuntu' ]; then
-        apt install gcc make libpcre3 libpcre3-dev openssl libssl-dev zlib1g-dev -y 
+        apt install gcc make libpcre3 libpcre3-dev openssl libssl-dev zlib1g-dev libgd-dev -y
     fi
     if [ $? -ne 0 ]; then
         echo '安装依赖失败'
@@ -43,9 +44,12 @@ install_nginx{
     tar xf nginx-${NGINX_VERSION}.tar.gz
     cd nginx-${NGINX_VERSION}
     #配置参数
-    ./configure --prefix=${NGINX_DIR} --user=www --group=www --with-openssl=${NGINX_DIR}/src/openssl --with-pcre=pcre-8.43 --with-http_v2_module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_stub_status_module --with-http_ssl_module --with-http_image_filter_module --with-http_gzip_static_module --with-http_gunzip_module --with-ipv6 --with-http_sub_module --with-http_flv_module --with-http_realip_module --with-http_mp4_module 
+    ./configure --prefix=${NGINX_DIR} --user=www --group=www --with-http_v2_module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_stub_status_module --with-http_ssl_module --with-http_image_filter_module --with-http_gzip_static_module --with-http_gunzip_module --with-http_sub_module --with-http_flv_module --with-http_realip_module --with-http_mp4_module 
     #编译安装
     make -j ${CPUS} && make install
+    chown -R www:www $NGINX_DIR
+    ln -s $NGINX_DIR/sbin/nginx /usr/local/sbin/nginx
+    echo '安装成功'
 }
 
 install_nginx
