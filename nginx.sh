@@ -1,6 +1,8 @@
 #!/bin/bash
 apt update -y
 
+REMOTE_URL=https://raw.githubusercontent.com/mina998/test/main
+
 INSTALL_DIR=/lnwp
 NGINX_DIR=$INSTALL_DIR/nginx
 
@@ -62,7 +64,8 @@ function install_nginx {
     make -j ${CPUS} && make install
     chown -R www:www $NGINX_DIR
     ln -s $NGINX_DIR/sbin/nginx /usr/local/sbin/nginx
-    cat ../services/nginx.service | sed "s/\${NGINX_DIR}/${NGINX_DIR}/g" > /etc/systemd/system/nginx.service
+    # cat ../services/nginx.service | sed "s/\${NGINX_DIR}/${NGINX_DIR}/g" > /etc/systemd/system/nginx.service
+    curl $REMOTE_URL/service/nginx.service | sed "s/\${NGINX_DIR}/${NGINX_DIR}/g" > /etc/systemd/system/nginx.service
     systemctl daemon-reload
     systemctl enable --now nginx &> /dev/null
     # 检查 Nginx 服务状态
