@@ -64,8 +64,7 @@ function install_nginx {
     make -j ${CPUS} && make install
     chown -R www:www $NGINX_DIR
     ln -s $NGINX_DIR/sbin/nginx /usr/local/sbin/nginx
-    # cat ../services/nginx.service | sed "s/\${NGINX_DIR}/${NGINX_DIR}/g" > /etc/systemd/system/nginx.service
-    curl $REMOTE_URL/service/nginx.service | sed "s/\${NGINX_DIR}/${NGINX_DIR}/g" > /etc/systemd/system/nginx.service
+    curl $REMOTE_URL/service/nginx.service | sed "s|\${NGINX_DIR}|$NGINX_DIR|g" > /etc/systemd/system/nginx.service
     systemctl daemon-reload
     systemctl enable --now nginx &> /dev/null
     # 检查 Nginx 服务状态
