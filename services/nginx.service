@@ -3,14 +3,12 @@ Description=The NGINX HTTP and reverse proxy server
 After=network.target remote-fs.target nss-lookup.target
 
 [Service]
-User=www
-Group=www
 Type=forking
-PIDFile=${NGINX_DIR}/logs/nginx.pid
-ExecStartPre=${NGINX_DIR}/sbin/nginx -t
-ExecStart=${NGINX_DIR}/sbin/nginx
-ExecReload=${NGINX_DIR}/sbin/nginx -s reload
-ExecStop=${NGINX_DIR}/sbin/nginx -s quit
+ExecStartPre=${NGINX_DIR}/sbin/nginx -t -c ${NGINX_DIR}/conf/nginx.conf   
+ExecStart=${NGINX_DIR}/sbin/nginx -c ${NGINX_DIR}/conf/nginx.conf   
+ExecReload=${NGINX_DIR}/sbin/nginx -s reload                                                 
+ExecStop=${NGINX_DIR}/sbin/nginx -s stop                                                                                                       
+PrivateTmp=true   
 
 [Install]
 WantedBy=multi-user.target

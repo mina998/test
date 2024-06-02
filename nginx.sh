@@ -77,7 +77,6 @@ function install_nginx {
     fi
 }
 
-
 install_nginx
 
 rm -rf $SRC_DIR
