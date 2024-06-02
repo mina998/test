@@ -1,0 +1,16 @@
+[Unit]
+Description=The NGINX HTTP and reverse proxy server
+After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+User=www
+Group=www
+Type=forking
+PIDFile=${NGINX_DIR}/logs/nginx.pid
+ExecStartPre=${NGINX_DIR}/sbin/nginx -t
+ExecStart=${NGINX_DIR}/sbin/nginx
+ExecReload=${NGINX_DIR}/sbin/nginx -s reload
+ExecStop=${NGINX_DIR}/sbin/nginx -s quit
+
+[Install]
+WantedBy=multi-user.target
