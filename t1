@@ -1,0 +1,12 @@
+listener HTTP {
+    include     file_path
+    address     *:80
+    secure      0
+}
+listener HTTPs {
+    include     file_path
+    address     *:443
+    secure      1
+    keyFile     conf/example.key
+    certFile    conf/example.crt
+}
